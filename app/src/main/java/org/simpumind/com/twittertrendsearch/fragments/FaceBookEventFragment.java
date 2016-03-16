@@ -40,7 +40,9 @@ import org.simpumind.com.twittertrendsearch.util.ButteryProgressBar;
 import org.simpumind.com.twittertrendsearch.util.RestClient;
 import org.simpumind.com.twittertrendsearch.util.WaveHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -48,7 +50,7 @@ public class FaceBookEventFragment extends Fragment {
 
     public String json;
 
-    public String city;
+    public String formatedDate;
     public String country;
     static String dataString;
     /********************************************************************/
@@ -192,8 +194,8 @@ public class FaceBookEventFragment extends Fragment {
                         country = getMessageFromServer(location, TAG_COUNTRY);//location.optString(TAG_COUNTRY, "");
                     }*/
 
-                    FaceBookEventList faceBookEventList = new FaceBookEventList(placeName, startTime,
-                            endTime, eventName, description,
+                    FaceBookEventList faceBookEventList = new FaceBookEventList(placeName, parseDate(startTime),
+                            parseDate(endTime), eventName, description,
                             dataID, "", "", placeId);
                     faceBookEventList.save();
                     eventLists.add(faceBookEventList);
@@ -244,6 +246,23 @@ public class FaceBookEventFragment extends Fragment {
     public void onDestroyView() {
        // swipeLayout.removeAllViews();
         super.onDestroyView();
+    }
+
+    public String parseDate(String str) {
+
+        try {
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+            Date date = dateFormat.parse(str);
+
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            formatedDate = dateFormat.format(date);
+        }catch (java.text.ParseException e){
+            e.printStackTrace();
+        }
+
+        Log.d("Date", formatedDate);
+        return  formatedDate;
     }
 
 }

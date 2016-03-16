@@ -1,8 +1,10 @@
 package org.simpumind.com.twittertrendsearch.adapters;
 
 import android.content.Context;
+import android.net.ParseException;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,8 @@ import org.simpumind.com.twittertrendsearch.R;
 import org.simpumind.com.twittertrendsearch.models.FaceBookEventList;
 import org.simpumind.com.twittertrendsearch.util.RoundedLetterView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -26,6 +30,7 @@ public class EventListAdapter extends BetterRecyclerAdapter<FaceBookEventList, E
 
 
     Context c;
+    public static String formatedDate ;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -62,6 +67,23 @@ public class EventListAdapter extends BetterRecyclerAdapter<FaceBookEventList, E
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public String parseDate(String str) {
+
+        try {
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+            Date date = dateFormat.parse(str);
+
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+             formatedDate = dateFormat.format(date);
+        }catch (java.text.ParseException e){
+            e.printStackTrace();
+        }
+
+        Log.d("Date", formatedDate);
+        return  formatedDate;
     }
 }
 
