@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.orm.SugarApp;
 import com.squareup.otto.Bus;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -19,7 +20,7 @@ import retrofit.RestAdapter;
 /**
  * Created by simpumind on 3/15/16.
  */
-public class AppAplication extends Application{
+public class AppAplication extends SugarApp{
 
     private static final String TWITTER_KEY = "Pxx3sO5o7HXCbW9OHPj46KXoN";
     private static final String TWITTER_SECRET = "yrNQwx1RTXv6suOl2PpdAtnl5V2asBlnc81wfUbO5Iu5xNnnTQ";
@@ -68,6 +69,7 @@ public class AppAplication extends Application{
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(base);
+
     }
 
 }

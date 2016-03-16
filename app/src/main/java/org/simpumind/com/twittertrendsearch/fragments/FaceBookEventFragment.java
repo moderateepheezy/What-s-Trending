@@ -26,6 +26,7 @@ import com.ftinc.kit.adapter.BetterRecyclerAdapter;
 import com.gelitenight.waveview.library.WaveView;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.ndczz.infinityloading.InfinityLoading;
+import com.orm.SugarRecord;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,13 +95,13 @@ public class FaceBookEventFragment extends Fragment {
     public void onViewCreated(View rootView, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(rootView, savedInstanceState);
         infinityLoading = (InfinityLoading) rootView.findViewById(R.id.loading);
-        eventLists = new ArrayList<>();
+
         recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         recyclerView.hasFixedSize();
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-
+        eventLists = new ArrayList<>();
         Intent intent = getActivity().getIntent();
 
         String jsondata = intent.getStringExtra("jsondata");
@@ -115,7 +116,9 @@ public class FaceBookEventFragment extends Fragment {
             Intent intentb = new Intent(getActivity(), HomeActivity.class);
             startActivity(intentb);
         }else {
-            getEvents();
+           // List<FaceBookEventList> eventListss = SugarRecord.listAll(FaceBookEventList.class);
+           // if(eventListss == null) {
+                getEvents();
         }
 
         MaterialViewPagerHelper.registerRecyclerView(getActivity(), recyclerView, null);
@@ -183,15 +186,17 @@ public class FaceBookEventFragment extends Fragment {
                     String placeId = getMessageFromServer(place, TAG_PLACE_ID);//place.optString(TAG_PLACE_ID, "");
 
                     //Loop through place location
-                    if(!place.isNull(TAG_LOCATION)) {
+                    /*if(!place.isNull(TAG_LOCATION)) {
                         JSONObject location = place.getJSONObject(TAG_LOCATION);
                         city = getMessageFromServer(location, TAG_CITY);//location.optString(TAG_CITY, "");
                         country = getMessageFromServer(location, TAG_COUNTRY);//location.optString(TAG_COUNTRY, "");
-                    }
+                    }*/
 
-                    eventLists.add(new FaceBookEventList(placeName, startTime,
+                    FaceBookEventList faceBookEventList = new FaceBookEventList(placeName, startTime,
                             endTime, eventName, description,
-                            dataID, "", "", placeId));
+                            dataID, "", "", placeId);
+                    faceBookEventList.save();
+                    eventLists.add(faceBookEventList);
                 }
 
             if(!jsonObject.isNull("paging")) {
@@ -240,4 +245,5 @@ public class FaceBookEventFragment extends Fragment {
        // swipeLayout.removeAllViews();
         super.onDestroyView();
     }
+
 }

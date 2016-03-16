@@ -3,17 +3,19 @@ package org.simpumind.com.twittertrendsearch.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.orm.SugarRecord;
+
 /**
  * Created by simpumind on 2/29/16.
  */
-public class FaceBookEventList implements Parcelable{
+public class FaceBookEventList extends SugarRecord implements Parcelable{
 
     public String placeName;
     public String startTime;
     public String endTime;
     public String eventName;
     public String description;
-    public String id;
+    public String ids;
     public String city;
     public String country;
     public String place_id;
@@ -25,7 +27,7 @@ public class FaceBookEventList implements Parcelable{
         this.endTime = endTime;
         this.eventName = eventName;
         this.description = description;
-        this.id = id;
+        this.ids = id;
         this.city = city;
         this.country = country;
         this.place_id = place_id;
@@ -37,7 +39,7 @@ public class FaceBookEventList implements Parcelable{
         endTime = in.readString();
         eventName = in.readString();
         description = in.readString();
-        id = in.readString();
+        ids = in.readString();
         city = in.readString();
         country = in.readString();
         place_id = in.readString();
@@ -119,12 +121,12 @@ public class FaceBookEventList implements Parcelable{
         this.description = description;
     }
 
-    public String getId() {
-        return id;
+    public String getIds() {
+        return ids;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.ids = id;
     }
 
     @Override
@@ -139,7 +141,7 @@ public class FaceBookEventList implements Parcelable{
         parcel.writeString(endTime);
         parcel.writeString(eventName);
         parcel.writeString(description);
-        parcel.writeString(id);
+        parcel.writeString(ids);
         parcel.writeString(city);
         parcel.writeString(country);
         parcel.writeString(place_id);
