@@ -30,7 +30,6 @@ public class EventListAdapter extends BetterRecyclerAdapter<FaceBookEventList, E
 
 
     Context c;
-    public static String formatedDate ;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -69,21 +68,5 @@ public class EventListAdapter extends BetterRecyclerAdapter<FaceBookEventList, E
         }
     }
 
-    public String parseDate(String str) {
-
-        try {
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-            Date date = dateFormat.parse(str);
-
-            dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-             formatedDate = dateFormat.format(date);
-        }catch (java.text.ParseException e){
-            e.printStackTrace();
-        }
-
-        Log.d("Date", formatedDate);
-        return  formatedDate;
-    }
 }
 
