@@ -3,6 +3,7 @@ package org.simpumind.com.twittertrendsearch.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
 import com.ftinc.kit.adapter.BetterRecyclerAdapter;
 import com.gelitenight.waveview.library.WaveView;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
@@ -28,10 +31,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.simpumind.com.twittertrendsearch.R;
+import org.simpumind.com.twittertrendsearch.activities.HomeActivity;
 import org.simpumind.com.twittertrendsearch.activities.ViewerActivity;
 import org.simpumind.com.twittertrendsearch.adapters.EventListAdapter;
 import org.simpumind.com.twittertrendsearch.models.FaceBookEventList;
 import org.simpumind.com.twittertrendsearch.util.ButteryProgressBar;
+import org.simpumind.com.twittertrendsearch.util.RestClient;
 import org.simpumind.com.twittertrendsearch.util.WaveHelper;
 
 import java.util.ArrayList;
@@ -81,6 +86,7 @@ public class FaceBookEventFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        FacebookSdk.sdkInitialize(getActivity());
         return inflater.inflate(R.layout.fragment_face_book_event, container, false);
     }
 
@@ -99,75 +105,21 @@ public class FaceBookEventFragment extends Fragment {
 
         String jsondata = intent.getStringExtra("jsondata");
 
-        // setEventData(jsondata);
-
         setJsonString(jsondata);
 
-        // new Handler().postDelayed(new Runnable() {
-        //    @Override
-        //    public void run() {
-        getEvents();
-        //    }
-        //  }, SPLASH_TIME_OUT);
+        SharedPreferences settings = getActivity().getSharedPreferences("KEY_NAME",
+                getActivity().MODE_PRIVATE);
+        String fbSession = settings.getString("fbsession", "");
 
-        /*swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
-        swipeLayout.setOnRefreshListener(this);
-        swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);*/
+        if(fbSession.isEmpty()){
+            Intent intentb = new Intent(getActivity(), HomeActivity.class);
+            startActivity(intentb);
+        }else {
+            getEvents();
+        }
 
         MaterialViewPagerHelper.registerRecyclerView(getActivity(), recyclerView, null);
     }
-
-    /*@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_face_book_event, container, false);
-        infinityLoading = (InfinityLoading) rootView.findViewById(R.id.loading);
-        eventLists = new ArrayList<>();
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
-        recyclerView.hasFixedSize();
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-
-        Intent intent = getActivity().getIntent();
-
-        String jsondata = intent.getStringExtra("jsondata");
-
-        // setEventData(jsondata);
-
-        setJsonString(jsondata);
-
-       // new Handler().postDelayed(new Runnable() {
-        //    @Override
-        //    public void run() {
-                getEvents();
-        //    }
-      //  }, SPLASH_TIME_OUT);
-
-        swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
-        swipeLayout.setOnRefreshListener(this);
-        swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-
-
-        return rootView;
-
-    }*/
-
-   /* @Override public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override public void run() {
-                swipeLayout.setRefreshing(false);
-            }
-        }, 5000);
-    }*/
-
 
 
     public void getEvents(){
@@ -182,16 +134,15 @@ public class FaceBookEventFragment extends Fragment {
         this.json = json;
     }
 
-    private void setEventData(String jsondata) {
-        Log.d("OBJECT_JASON", jsondata);
-        String all = null;
-
-
-       // Log.d("Fire", eventLists.toString());
-
-    }
 
     public class GetEventData extends AsyncTask<Void, Void, Void> {
+
+        private RestClient connect;
+        private String text;
+
+        final String[] afterString = {""};  // will contain the next page cursor
+        final Boolean[] noData = {false};   // stop when there is no after cursor
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -203,13 +154,21 @@ public class FaceBookEventFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... voids) {
 
+            SharedPreferences settings = getActivity().getSharedPreferences("KEY_NAME",
+                    getActivity().MODE_PRIVATE);
+            String fbSession = settings.getString("fbsession", "");
+
+            String apiUrl = "https://graph.facebook.com/search?q=Nigeria&type=event&access_token=" + fbSession;
             if(getJsonString() == null){
                 dataString = "";
             }
             dataString = getJsonString();
 //            Log.d("OBJECT_JASON", dataString);
+            connect = new RestClient(apiUrl);
             try {
-                JSONObject jsonObject = new JSONObject(dataString);
+                connect.Execute(RestClient.RequestMethod.GET);
+                text = connect.getResponse();
+                JSONObject jsonObject = new JSONObject(text);
                 JSONArray jsonArray =   jsonObject.getJSONArray(TAG_DATA);
                 for (int i = 0; i < jsonArray.length(); i++){
                     JSONObject data = jsonArray.getJSONObject(i);
@@ -235,7 +194,7 @@ public class FaceBookEventFragment extends Fragment {
                             dataID, "", "", placeId));
                 }
 
-            /*if(!jsonObject.isNull("paging")) {
+            if(!jsonObject.isNull("paging")) {
                 JSONObject paging = jsonObject.getJSONObject("paging");
                 JSONObject cursors = paging.getJSONObject("cursors");
                 if (!cursors.isNull("after"))
@@ -244,8 +203,8 @@ public class FaceBookEventFragment extends Fragment {
                     noData[0] = true;
             }
             else
-                noData[0] = true;*/
-            }catch (JSONException e){
+                noData[0] = true;
+            }catch (Exception e){
                 e.printStackTrace();
             }
             return null;

@@ -1,6 +1,7 @@
 package org.simpumind.com.twittertrendsearch.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
@@ -64,6 +65,15 @@ public class HomeActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 // Call private method
                 onFblogin();
+            }
+        });
+
+        Button lodR = (Button) findViewById(R.id.loadr);
+        lodR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, SocialActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -246,9 +256,16 @@ public class HomeActivity extends AppCompatActivity implements
                                         // Insert your code here
                                         Log.d("AccessApp", loginResult.getAccessToken().getToken());
                                         JSONObject jsonObject = response.getJSONObject();
-                                        Intent intent = new Intent(HomeActivity.this, SocialActivity.class);
+                                        /*Intent intent = new Intent(HomeActivity.this, SocialActivity.class);
                                         intent.putExtra("jsondata", jsonObject.toString());
-                                        startActivity(intent);
+                                        startActivity(intent);*/
+
+                                        SharedPreferences settings = getApplicationContext().getSharedPreferences("KEY_NAME",
+                                                getApplicationContext().MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = settings.edit();
+                                        editor.putString("fbsession", loginResult.getAccessToken().getToken());
+                                        editor.commit();
+                                        editor.apply();
                                     }
 
                                 });
@@ -294,6 +311,10 @@ public class HomeActivity extends AppCompatActivity implements
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static void checkLogin(){
+        LoginManager.getInstance().logOut();
     }
 }
 

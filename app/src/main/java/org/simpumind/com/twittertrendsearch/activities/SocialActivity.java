@@ -1,5 +1,6 @@
 package org.simpumind.com.twittertrendsearch.activities;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+
+import com.facebook.AccessToken;
 
 import org.simpumind.com.twittertrendsearch.R;
 import org.simpumind.com.twittertrendsearch.fragments.FaceBookEventFragment;
@@ -50,6 +53,7 @@ public class SocialActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
@@ -126,5 +130,10 @@ public class SocialActivity extends AppCompatActivity {
             }
             return null;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }
