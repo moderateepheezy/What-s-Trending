@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">TwitterTrendSearch</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_tweet_result">Tweet From Trends</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_home">HomeActivity</string>
+
+    <string name="facebook_app_id">1012925262084258</string>
+    <string name="title_activity_facebook_event">FaceBook Events</string>
+    <string name="title_activity_social">Social Trends</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_login">Login</string>
+
+</resources>
