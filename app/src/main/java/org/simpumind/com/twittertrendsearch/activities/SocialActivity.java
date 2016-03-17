@@ -125,9 +125,9 @@ public class SocialActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Facebook Events";
+                    return "Events";
                 case 1:
-                    return "Twitter Trends";
+                    return "Trends";
             }
             return null;
         }

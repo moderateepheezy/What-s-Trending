@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -12,10 +13,31 @@
         android:layout_margin="2dp"
         app:cardCornerRadius="2dp"
         >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="6dp"
+            android:background="?attr/selectableItemBackground">
+
+        <org.simpumind.com.twittertrendsearch.util.RoundedLetterView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rlv_name_view"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="15dp"
+            android:layout_centerVertical="true"
+            tools:visibility="visible"
+            app:backgroundColorValue="@color/green_100"
+            app:titleColor="@android:color/white"
+            app:titleSize="35dp"
+            app:titleText="A" />
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginStart="15dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/rlv_name_view"
             android:padding="16dp">
 
             <LinearLayout
@@ -60,6 +82,7 @@
                     android:gravity="center_horizontal"/>
             </LinearLayout>
         </LinearLayout>
+        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 
