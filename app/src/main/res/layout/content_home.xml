@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -38,79 +38,55 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp">
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp">
-            <ImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/profile_image"
-                android:layout_width="46dp"
-                android:layout_height="46dp"
-                android:src="@drawable/com_facebook_button_icon"
-                android:background="#3b5998"/>
+            android:orientation="vertical">
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Login via Facebook"
+                android:id="@+id/facebookd"
+                android:layout_gravity="center_horizontal"
+                android:background="#3b5998"
+                android:layout_margin="8dp"
+                android:textColor="#ffffffff" />
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Login via Twitter"
+                android:id="@+id/twitterd"
+                android:layout_gravity="center_horizontal"
+                android:background="#55ACEE"
+                android:layout_margin="8dp"
+                android:textColor="#ffffffff"/>
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Login via Instagram"
+                android:id="@+id/linkedin"
+                android:layout_gravity="center_horizontal"
+                android:background="#287bbc"
+                android:layout_margin="8dp"
+                android:textColor="#ffffffff"/>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <Button
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/social"
-                android:layout_centerInParent="true"
-                android:text="Log in With FaceBook"
-                android:textSize="19sp"/>
-            <android.support.v7.widget.SwitchCompat
-                android:paddingRight="10dp"
-                android:id="@+id/facebook_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
-                android:textOff="Remove"
-                android:textOn="Add"
-                style="@style/MySwitch"
-                android:checked="false"/>
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp">
-            <ImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/profile_tw"
-                android:layout_width="46dp"
-                android:layout_height="46dp"
-                android:src="@drawable/tw__ic_logo_default"
-                android:background="#0a9aed"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/social_twitter"
-                android:layout_centerInParent="true"
-                android:text="Log in With Twitter"
-                android:textSize="19sp"/>
-            <android.support.v7.widget.SwitchCompat
-                android:paddingRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/twitter_login"
-                android:textOff="Remove"
-                android:textOn="Add"
-                style="@style/MySwitch"
-                android:checked="false"/>
-        </RelativeLayout>
+                android:text="Login via EventBrite"
+                android:id="@+id/eventbrite"
+                android:layout_gravity="center_horizontal"
+                android:background="#bc4828"
+                android:layout_margin="8dp"
+                android:textColor="#ffffffff"/>
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/loadr"
+        android:layout_alignParentBottom="true"
         android:text="Back to Home"/>
 
-</LinearLayout>
+</RelativeLayout>

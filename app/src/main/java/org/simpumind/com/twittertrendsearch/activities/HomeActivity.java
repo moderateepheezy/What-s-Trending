@@ -35,16 +35,15 @@ import org.simpumind.com.twittertrendsearch.R;
 
 import java.util.Arrays;
 
-public class HomeActivity extends AppCompatActivity implements
-        CompoundButton.OnCheckedChangeListener{
+public class HomeActivity extends AppCompatActivity {
 
     public static CallbackManager callbackmanager;
 
     private TwitterLoginButton loginButtons;
     private Button fbbutton;
 
-    private SwitchCompat facebook_switch;
-    private SwitchCompat twtter_swtich;
+    private Button facebookd;
+    private Button twtterd;
 
     private TwitterAuthClient client;
 
@@ -77,12 +76,22 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        facebook_switch  = (SwitchCompat) findViewById(R.id.facebook_login);
-        twtter_swtich = (SwitchCompat) findViewById(R.id.twitter_login);
-        facebook_switch.setSwitchPadding(40);
-        facebook_switch.setOnCheckedChangeListener(this);
-        twtter_swtich.setSwitchPadding(40);
-        twtter_swtich.setOnCheckedChangeListener(this);
+        facebookd  = (Button) findViewById(R.id.facebookd);
+        twtterd = (Button) findViewById(R.id.twitterd);
+
+        facebookd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFblogin();
+            }
+        });
+
+        twtterd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginTwitter();
+            }
+        });
 
         /*LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("email,publish_actions, user_events", "");
@@ -125,26 +134,6 @@ public class HomeActivity extends AppCompatActivity implements
 
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        switch (compoundButton.getId()){
-            case R.id.facebook_login:
-                if(b) {
-                    onFblogin();
-                }
-                else{
-                    LoginManager.getInstance().logOut();
-                }
-                break;
-            case R.id.twitter_login:
-                if(b){
-                    loginTwitter();
-                }
-                else{
-
-                }
-        }
-    }
 
     protected void facebookSDKInitialize() {
 
