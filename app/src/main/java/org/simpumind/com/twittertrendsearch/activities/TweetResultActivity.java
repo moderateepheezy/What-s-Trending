@@ -163,7 +163,7 @@ public class TweetResultActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }if(id == R.id.action_ui){
-            Intent intent = new Intent(this, TestActivity.class);
+            Intent intent = new Intent(this, MainerTabActivity.class);
             startActivity(intent);
         }
 

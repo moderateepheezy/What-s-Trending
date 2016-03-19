@@ -24,25 +24,27 @@
             android:id="@+id/rlv_name_view"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
             android:layout_centerVertical="true"
             tools:visibility="visible"
             app:backgroundColorValue="@color/green_100"
             app:titleColor="@android:color/white"
             app:titleSize="35dp"
             app:titleText="A" />
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/rlv_name_view"
+            android:layout_toRightOf="@+id/rlv_name_view"
             android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="20dp"
@@ -55,7 +57,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="GEGGF"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
                     android:textSize="15sp"
                     android:textColor="#f23131"
                     android:layout_weight="0.5"/>
@@ -63,7 +65,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_alignParentRight="true"
+                android:gravity="bottom"
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="20dp"
@@ -78,10 +81,10 @@
                     android:text="GEGGF"
                     android:textSize="15sp"
                     android:textColor="#000"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
                     android:gravity="center_horizontal"/>
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

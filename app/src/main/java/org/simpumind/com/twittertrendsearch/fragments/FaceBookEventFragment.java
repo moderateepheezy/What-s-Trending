@@ -1,6 +1,7 @@
 package org.simpumind.com.twittertrendsearch.fragments;
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +26,9 @@ import com.facebook.FacebookSdk;
 import com.ftinc.kit.adapter.BetterRecyclerAdapter;
 import com.gelitenight.waveview.library.WaveView;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.github.ndczz.infinityloading.InfinityLoading;
 import com.orm.SugarRecord;
 
@@ -47,6 +51,8 @@ import java.util.List;
 
 
 public class FaceBookEventFragment extends Fragment {
+
+    public static final String ARG_SCROLL_Y = "ARG_SCROLL_Y";
 
     public String json;
 
@@ -90,7 +96,31 @@ public class FaceBookEventFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getActivity());
-        return inflater.inflate(R.layout.fragment_face_book_event, container, false);
+        View view = inflater.inflate(R.layout.fragment_face_book_event, container, false);
+
+        final ObservableScrollView scrollView = (ObservableScrollView) view.findViewById(R.id.scroll);
+        Activity parentActivity = getActivity();
+        if (parentActivity instanceof ObservableScrollViewCallbacks) {
+            // Scroll to the specified offset after layout
+            Bundle args = getArguments();
+            if (args != null && args.containsKey(ARG_SCROLL_Y)) {
+                final int scrollY = args.getInt(ARG_SCROLL_Y, 0);
+                ScrollUtils.addOnGlobalLayoutListener(scrollView, new Runnable() {
+                    @Override
+                    public void run() {
+                        scrollView.scrollTo(0, scrollY);
+                    }
+                });
+            }
+
+            // TouchInterceptionViewGroup should be a parent view other than ViewPager.
+            // This is a workaround for the issue #117:
+            // https://github.com/ksoichiro/Android-ObservableScrollView/issues/117
+            scrollView.setTouchInterceptionViewGroup((ViewGroup) parentActivity.findViewById(R.id.root));
+
+            scrollView.setScrollViewCallbacks((ObservableScrollViewCallbacks) parentActivity);
+        }
+        return view;
     }
 
     @Override
@@ -115,6 +145,7 @@ public class FaceBookEventFragment extends Fragment {
         String fbSession = settings.getString("fbsession", "");
 
         if(fbSession.isEmpty()){
+            HomeActivity.checkLogin();
             Intent intentb = new Intent(getActivity(), HomeActivity.class);
             startActivity(intentb);
         }else {

@@ -295,8 +295,8 @@ public class HomeActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(HomeActivity.this, MainActivity.class);
-            startActivity(intent);
-           // LoginManager.getInstance().logOut();
+           // startActivity(intent);
+            LoginManager.getInstance().logOut();
         }
 
         return super.onOptionsItemSelected(item);

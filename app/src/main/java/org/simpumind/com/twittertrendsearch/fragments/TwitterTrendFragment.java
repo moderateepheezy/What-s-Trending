@@ -1,6 +1,7 @@
 package org.simpumind.com.twittertrendsearch.fragments;
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.github.ndczz.infinityloading.InfinityLoading;
 import com.google.gson.Gson;
 
@@ -66,6 +70,9 @@ public class TwitterTrendFragment extends Fragment {
     private static final String TWITTER_SECRET = "yrNQwx1RTXv6suOl2PpdAtnl5V2asBlnc81wfUbO5Iu5xNnnTQ";
 
 
+    public static final String ARG_SCROLL_Y = "ARG_SCROLL_Y";
+
+
     public static List<TrendListItem> trendListItem;
     TweetTagAdapter tweetTagAdapter;
     RecyclerView recyclerView;
@@ -84,6 +91,29 @@ public class TwitterTrendFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.main, container, false);
+
+        final ObservableScrollView scrollView = (ObservableScrollView) rootView.findViewById(R.id.scroll);
+        Activity parentActivity = getActivity();
+        if (parentActivity instanceof ObservableScrollViewCallbacks) {
+            // Scroll to the specified offset after layout
+            Bundle args = getArguments();
+            if (args != null && args.containsKey(ARG_SCROLL_Y)) {
+                final int scrollY = args.getInt(ARG_SCROLL_Y, 0);
+                ScrollUtils.addOnGlobalLayoutListener(scrollView, new Runnable() {
+                    @Override
+                    public void run() {
+                        scrollView.scrollTo(0, scrollY);
+                    }
+                });
+            }
+
+            // TouchInterceptionViewGroup should be a parent view other than ViewPager.
+            // This is a workaround for the issue #117:
+            // https://github.com/ksoichiro/Android-ObservableScrollView/issues/117
+            scrollView.setTouchInterceptionViewGroup((ViewGroup) parentActivity.findViewById(R.id.root));
+
+            scrollView.setScrollViewCallbacks((ObservableScrollViewCallbacks) parentActivity);
+        }
         trendListItem = new ArrayList<>();
         infinityLoading = (InfinityLoading) rootView.findViewById(R.id.loading);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
