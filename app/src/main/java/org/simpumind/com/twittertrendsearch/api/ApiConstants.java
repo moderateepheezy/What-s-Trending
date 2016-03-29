@@ -22,5 +22,6 @@ public class ApiConstants {
 
 	public final static String TWITTER_TREND_SEARCH_CODE = "https://api.twitter.com/1.1/trends/place.json?id=23424908";
 
+	public final static String EVENT_BRITE_CUSTOM_TOKEN = "RECAY4SFJCYLTRCBNW5C";
 
 }

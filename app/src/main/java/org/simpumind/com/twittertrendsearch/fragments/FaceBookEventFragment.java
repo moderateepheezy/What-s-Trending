@@ -39,6 +39,7 @@ import org.simpumind.com.twittertrendsearch.R;
 import org.simpumind.com.twittertrendsearch.activities.HomeActivity;
 import org.simpumind.com.twittertrendsearch.activities.ViewerActivity;
 import org.simpumind.com.twittertrendsearch.adapters.EventListAdapter;
+import org.simpumind.com.twittertrendsearch.api.ApiConstants;
 import org.simpumind.com.twittertrendsearch.models.FaceBookEventList;
 import org.simpumind.com.twittertrendsearch.util.ButteryProgressBar;
 import org.simpumind.com.twittertrendsearch.util.RestClient;
@@ -296,4 +297,31 @@ public class FaceBookEventFragment extends Fragment {
         return  formatedDate;
     }
 
-}
+
+    public class GetEventBriteData extends AsyncTask<Void, Void, Void> {
+
+        private RestClient connect;
+        private String text;
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            String apiUrl = "https://www.eventbriteapi.com/v3/events/search/?location.address=Lagos&token=" + ApiConstants.EVENT_BRITE_CUSTOM_TOKEN;
+            connect = new RestClient(apiUrl);
+            try {
+                connect.Execute(RestClient.RequestMethod.GET);
+                text = connect.getResponse();
+                JSONObject jsonObject = new JSONObject(text);
+                JSONArray jsonArray = jsonObject.getJSONArray("events");
+
+
+
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    }
