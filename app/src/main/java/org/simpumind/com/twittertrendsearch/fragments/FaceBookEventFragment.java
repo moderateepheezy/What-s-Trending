@@ -40,6 +40,7 @@ import org.simpumind.com.twittertrendsearch.activities.HomeActivity;
 import org.simpumind.com.twittertrendsearch.activities.ViewerActivity;
 import org.simpumind.com.twittertrendsearch.adapters.EventListAdapter;
 import org.simpumind.com.twittertrendsearch.api.ApiConstants;
+import org.simpumind.com.twittertrendsearch.models.EventBriteDataList;
 import org.simpumind.com.twittertrendsearch.models.FaceBookEventList;
 import org.simpumind.com.twittertrendsearch.util.ButteryProgressBar;
 import org.simpumind.com.twittertrendsearch.util.RestClient;
@@ -86,6 +87,7 @@ public class FaceBookEventFragment extends Fragment {
     private InfinityLoading infinityLoading;
 
     public static List<FaceBookEventList> eventLists;
+    public static List<EventBriteDataList> briteLists;
     RecyclerView recyclerView;
     //public SwipeRefreshLayout swipeLayout;
     public EventListAdapter mAdapter;
@@ -135,6 +137,7 @@ public class FaceBookEventFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         eventLists = new ArrayList<>();
+        briteLists = new ArrayList<>();
         Intent intent = getActivity().getIntent();
 
         String jsondata = intent.getStringExtra("jsondata");
@@ -314,7 +317,34 @@ public class FaceBookEventFragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(text);
                 JSONArray jsonArray = jsonObject.getJSONArray("events");
 
+                for (int i = 0; i < jsonArray.length(); i++){
+                    JSONObject data = jsonArray.getJSONObject(i);
 
+                    JSONObject end = data.getJSONObject("end");
+                    String endTime = getMessageFromServer(end, "utc");
+
+                    JSONObject desc = data.getJSONObject(TAG_DESCRIPTION);
+                    String description = getMessageFromServer(desc, "text");
+
+                    JSONObject start = data.getJSONObject("start");
+                    String startTime = getMessageFromServer(start, "utc");
+
+                    JSONObject name = data.getJSONObject("name");
+                    String eventName = getMessageFromServer(name, "text");
+
+
+                    String dataID = getMessageFromServer(data, "id");
+                    //Looping through place object
+                    JSONObject place = data.getJSONObject(TAG_PLACE);
+                    String  placeName = getMessageFromServer(place, TAG_PLACE_NAME);
+                    String placeId = getMessageFromServer(place, TAG_PLACE_ID);
+
+                    EventBriteDataList eventBriteDataList = new EventBriteDataList(parseDate(startTime),
+                            parseDate(endTime), eventName, description,
+                            dataID, "", "");
+                    eventBriteDataList.save();
+                    briteLists.add(eventBriteDataList);
+                }
 
 
             }catch (Exception e){

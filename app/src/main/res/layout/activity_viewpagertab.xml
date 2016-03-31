@@ -13,9 +13,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/DrawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:elevation="7dp">
+<FrameLayout
     android:id="@+id/root"
+    android:background="#beb9b9"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -45,7 +52,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="@color/PrimaryColor"
             android:minHeight="?attr/actionBarSize"
             app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar"
             app:theme="@style/Toolbar" />
@@ -58,3 +65,13 @@
     </LinearLayout>
 
 </FrameLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerView"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:background="@drawable/list_selector"
+        android:scrollbars="vertical">
+
+    </android.support.v7.widget.RecyclerView>
+</android.support.v4.widget.DrawerLayout>

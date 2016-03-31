@@ -16,6 +16,7 @@ import org.simpumind.com.twittertrendsearch.util.BusProvider;
 
 import io.fabric.sdk.android.Fabric;
 import retrofit.RestAdapter;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Created by simpumind on 3/15/16.
@@ -40,6 +41,12 @@ public class AppAplication extends SugarApp{
         mTwitterService = new TwitterServiceProvider(buildApi(), bus);
         bus.register(mTwitterService);
         bus.register(this); //listen to "global" events
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/yssdk_yahoo_search_sdk_font.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
     }
 
     private TwitterApiService buildApi() {
