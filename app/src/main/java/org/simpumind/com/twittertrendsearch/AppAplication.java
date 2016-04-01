@@ -17,6 +17,7 @@ import org.simpumind.com.twittertrendsearch.util.BusProvider;
 import io.fabric.sdk.android.Fabric;
 import retrofit.RestAdapter;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by simpumind on 3/15/16.

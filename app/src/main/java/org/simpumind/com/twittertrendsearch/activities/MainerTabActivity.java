@@ -301,7 +301,7 @@ public class MainerTabActivity extends BaseActivity implements ObservableScrollV
      */
     private class NavigationAdapter extends CacheFragmentStatePagerAdapter {
 
-        private  final String[] TITLES = new String[]{"Events", "Trends"};
+        private  final String[] TITLES = new String[]{"EVENTS", "TRENDS"};
 
         private int mScrollY;
 
@@ -320,7 +320,7 @@ public class MainerTabActivity extends BaseActivity implements ObservableScrollV
             Fragment f;
             final int pattern = 2;
             switch (position) {
-                case 0: {
+                case 0:
                     f = new FaceBookEventFragment();
                     if (0 <= mScrollY) {
                         Bundle args = new Bundle();
@@ -328,8 +328,7 @@ public class MainerTabActivity extends BaseActivity implements ObservableScrollV
                         f.setArguments(args);
                     }
                     break;
-                }
-                case 1: {
+                case 1:
                     f = new TwitterTrendFragment();
                     if (0 < mScrollY) {
                         Bundle args = new Bundle();
@@ -337,8 +336,7 @@ public class MainerTabActivity extends BaseActivity implements ObservableScrollV
                         f.setArguments(args);
                     }
                     break;
-                }
-                default: {
+                default:
                     f = new FaceBookEventFragment();
                     if (0 < mScrollY) {
                         Bundle args = new Bundle();
@@ -346,7 +344,6 @@ public class MainerTabActivity extends BaseActivity implements ObservableScrollV
                         f.setArguments(args);
                     }
                     break;
-                }
             }
             return f;
         }

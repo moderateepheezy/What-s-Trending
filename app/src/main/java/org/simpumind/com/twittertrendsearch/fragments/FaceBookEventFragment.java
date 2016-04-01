@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -84,13 +85,14 @@ public class FaceBookEventFragment extends Fragment {
 
 
 
-    private InfinityLoading infinityLoading;
+    private ProgressBar infinityLoading;
 
     public static List<FaceBookEventList> eventLists;
     public static List<EventBriteDataList> briteLists;
     RecyclerView recyclerView;
     //public SwipeRefreshLayout swipeLayout;
     public EventListAdapter mAdapter;
+
 
     public FaceBookEventFragment() {
         // Required empty public constructor
@@ -129,7 +131,7 @@ public class FaceBookEventFragment extends Fragment {
     @Override
     public void onViewCreated(View rootView, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(rootView, savedInstanceState);
-        infinityLoading = (InfinityLoading) rootView.findViewById(R.id.loading);
+        infinityLoading = (ProgressBar) rootView.findViewById(R.id.loading);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         recyclerView.hasFixedSize();

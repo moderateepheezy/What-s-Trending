@@ -44,7 +44,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(items.get(position), listener);
-        if (items.size() == 0){
+        /*if (items.size() == 0){
             holder.mRoundedLetterView.setTitleText("A");
         }else{
             holder.mRoundedLetterView.setTitleText(items.get(position).getNames().substring(0, 1).toUpperCase());
@@ -53,7 +53,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             holder. mRoundedLetterView.setBackgroundColor(c.getResources().getColor(R.color.green));
         }else{
             holder.mRoundedLetterView.setBackgroundColor(c.getResources().getColor(R.color.red));
-        }
+        }*/
     }
 
     @Override
@@ -63,19 +63,17 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
     public static class  ViewHolder extends RecyclerView.ViewHolder{
         public TextView tweetName;
-        public RoundedLetterView mRoundedLetterView;
         public TextView twwetVolume;
 
         public ViewHolder(View itemView){
             super(itemView);
             tweetName = (TextView) itemView.findViewById(R.id.tweet_name);
             twwetVolume = (TextView) itemView.findViewById(R.id.tweet_volume);
-            mRoundedLetterView = (RoundedLetterView) itemView.findViewById(R.id.rlv_name_view);
         }
 
         public void bind(final TrendListItem item, final OnItemClickListener listener){
             tweetName.setText(item.getNames());
-            twwetVolume.setText(String.valueOf(item.getTweetVolume()));
+            twwetVolume.setText(String.valueOf(item.getTweetVolume() + " Tweets"));
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {

@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,7 +81,7 @@ public class TwitterTrendFragment extends Fragment {
 
     private static int SPLASH_TIME_OUT = 3000;
 
-    private InfinityLoading infinityLoading;
+    private ProgressBar infinityLoading;
 
     public TwitterTrendFragment() {
         // Required empty public constructor
@@ -115,7 +116,7 @@ public class TwitterTrendFragment extends Fragment {
             scrollView.setScrollViewCallbacks((ObservableScrollViewCallbacks) parentActivity);
         }
         trendListItem = new ArrayList<>();
-        infinityLoading = (InfinityLoading) rootView.findViewById(R.id.loading);
+        infinityLoading = (ProgressBar) rootView.findViewById(R.id.loading);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         recyclerView.hasFixedSize();
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
