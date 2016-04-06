@@ -92,7 +92,7 @@ public class HomeActivity extends AppCompatActivity {
         lodR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, SocialActivity.class);
+                Intent intent = new Intent(HomeActivity.this, MainerTabActivity.class);
                 startActivity(intent);
             }
         });
@@ -315,7 +315,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+            Intent intent = new Intent(HomeActivity.this, MainerTabActivity.class);
            // startActivity(intent);
             LoginManager.getInstance().logOut();
         }

@@ -42,6 +42,7 @@ import org.simpumind.com.twittertrendsearch.activities.ViewerActivity;
 import org.simpumind.com.twittertrendsearch.adapters.EventListAdapter;
 import org.simpumind.com.twittertrendsearch.api.ApiConstants;
 import org.simpumind.com.twittertrendsearch.models.EventBriteDataList;
+import org.simpumind.com.twittertrendsearch.models.EventsDataList;
 import org.simpumind.com.twittertrendsearch.models.FaceBookEventList;
 import org.simpumind.com.twittertrendsearch.util.ButteryProgressBar;
 import org.simpumind.com.twittertrendsearch.util.RestClient;
@@ -49,8 +50,13 @@ import org.simpumind.com.twittertrendsearch.util.WaveHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class FaceBookEventFragment extends Fragment {
@@ -87,8 +93,10 @@ public class FaceBookEventFragment extends Fragment {
 
     private ProgressBar infinityLoading;
 
-    public static List<FaceBookEventList> eventLists;
-    public static List<EventBriteDataList> briteLists;
+    public String fbSession;
+    public SharedPreferences settings;
+
+    public static ArrayList<EventsDataList> eventLists;
     RecyclerView recyclerView;
     //public SwipeRefreshLayout swipeLayout;
     public EventListAdapter mAdapter;
@@ -139,16 +147,15 @@ public class FaceBookEventFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         eventLists = new ArrayList<>();
-        briteLists = new ArrayList<>();
         Intent intent = getActivity().getIntent();
 
         String jsondata = intent.getStringExtra("jsondata");
 
         setJsonString(jsondata);
 
-        SharedPreferences settings = getActivity().getSharedPreferences("KEY_NAME",
+         settings = getActivity().getSharedPreferences("KEY_NAME",
                 getActivity().MODE_PRIVATE);
-        String fbSession = settings.getString("fbsession", "");
+         fbSession = settings.getString("fbsession", "");
 
         if(fbSession.isEmpty()){
             HomeActivity.checkLogin();
@@ -165,7 +172,7 @@ public class FaceBookEventFragment extends Fragment {
 
 
     public void getEvents(){
-        new GetEventData().execute();
+        new GetAllEvent().execute();
     }
 
     public String getJsonString() {
@@ -180,7 +187,9 @@ public class FaceBookEventFragment extends Fragment {
     public class GetEventData extends AsyncTask<Void, Void, Void> {
 
         private RestClient connect;
+        private RestClient connects;
         private String text;
+        private String texts;
 
         final String[] afterString = {""};  // will contain the next page cursor
         final Boolean[] noData = {false};   // stop when there is no after cursor
@@ -188,17 +197,10 @@ public class FaceBookEventFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            /*InfinityLoading loading = new InfinityLoading(getActivity());
-            loading.setProgressColor(Color.RED);
-            loading.animate();*/
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-
-            SharedPreferences settings = getActivity().getSharedPreferences("KEY_NAME",
-                    getActivity().MODE_PRIVATE);
-            String fbSession = settings.getString("fbsession", "");
 
             String apiUrl = "https://graph.facebook.com/search?q=Nigeria&type=event&access_token=" + fbSession;
             if(getJsonString() == null){
@@ -208,6 +210,9 @@ public class FaceBookEventFragment extends Fragment {
 //            Log.d("OBJECT_JASON", dataString);
             connect = new RestClient(apiUrl);
             try {
+
+
+
                 connect.Execute(RestClient.RequestMethod.GET);
                 text = connect.getResponse();
                 JSONObject jsonObject = new JSONObject(text);
@@ -234,9 +239,11 @@ public class FaceBookEventFragment extends Fragment {
                     FaceBookEventList faceBookEventList = new FaceBookEventList(placeName, parseDate(startTime),
                             parseDate(endTime), eventName, description,
                             dataID, "", "", placeId);
-                    faceBookEventList.save();
-                    eventLists.add(faceBookEventList);
+                    //faceBookEventList.save();
+                    eventLists.add(new EventsDataList("", "", placeName, parseDate(startTime), parseDate(endTime),
+                            eventName, description, dataID, "", "", placeId, R.drawable.facebook_icon, "Facebook"));
                 }
+
 
             if(!jsonObject.isNull("paging")) {
                 JSONObject paging = jsonObject.getJSONObject("paging");
@@ -257,21 +264,8 @@ public class FaceBookEventFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-           // Log.d("EventListTag", eventLists.toString());
-            mAdapter = new EventListAdapter();
-            mAdapter.addAll(eventLists);
-            recyclerView.setAdapter(mAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mAdapter.setOnItemClickListener(new BetterRecyclerAdapter.OnItemClickListener<FaceBookEventList>() {
-                @Override
-                public void onItemClick(View v, FaceBookEventList item, int position) {
-                    Intent viewer = new Intent(getActivity(), ViewerActivity.class);
-                    viewer.putExtra(ViewerActivity.EXTRA_OS, item);
-                    startActivity(viewer);
-                }
-            });
-            infinityLoading.setVisibility(View.GONE);
-            //swipeLayout.setRefreshing(false);
+           // Log.d("EventListTag", face.toString());
+           // eventLists.addAll(face);
         }
     }
 
@@ -305,6 +299,7 @@ public class FaceBookEventFragment extends Fragment {
 
     public class GetEventBriteData extends AsyncTask<Void, Void, Void> {
 
+        List<EventsDataList> listEvent = new ArrayList<>();
         private RestClient connect;
         private String text;
 
@@ -323,29 +318,28 @@ public class FaceBookEventFragment extends Fragment {
                     JSONObject data = jsonArray.getJSONObject(i);
 
                     JSONObject end = data.getJSONObject("end");
-                    String endTime = getMessageFromServer(end, "utc");
+                    String endTime =  end.optString("utc");//  getMessageFromServer(end, "utc");
 
                     JSONObject desc = data.getJSONObject(TAG_DESCRIPTION);
-                    String description = getMessageFromServer(desc, "text");
+                    String description = desc.optString("text");// getMessageFromServer(desc, "text");
 
                     JSONObject start = data.getJSONObject("start");
-                    String startTime = getMessageFromServer(start, "utc");
+                    String startTime = start.optString("start");//  getMessageFromServer(start, "utc");
 
                     JSONObject name = data.getJSONObject("name");
-                    String eventName = getMessageFromServer(name, "text");
+                    String eventName = name.optString("text"); // getMessageFromServer(name, "text");
+                    String dataID = data.optString("id");
+                    String url = data.optString("url");
 
-
-                    String dataID = getMessageFromServer(data, "id");
-                    //Looping through place object
-                    JSONObject place = data.getJSONObject(TAG_PLACE);
-                    String  placeName = getMessageFromServer(place, TAG_PLACE_NAME);
-                    String placeId = getMessageFromServer(place, TAG_PLACE_ID);
-
-                    EventBriteDataList eventBriteDataList = new EventBriteDataList(parseDate(startTime),
+                    EventsDataList evn = new EventsDataList("", url, "", parseDate(startTime),
                             parseDate(endTime), eventName, description,
-                            dataID, "", "");
-                    eventBriteDataList.save();
-                    briteLists.add(eventBriteDataList);
+                            dataID, "", "", "", R.drawable.eventbrite, "EventBrite");
+
+                    /*tweet.add(new EventsDataList("", url, "", parseDate(startTime),
+                            parseDate(endTime), eventName, description,
+                            dataID, "", "", "", R.drawable.eventbrite, "EventBrite"));*/
+                    eventLists.add(evn);
+                    //eventBriteDataList.save();
                 }
 
 
@@ -354,6 +348,50 @@ public class FaceBookEventFragment extends Fragment {
             }
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            //Log.d("Atrre", tweet.toString());
+           // eventLists.addAll(tweet);
+        }
     }
 
+    public class GetAllEvent extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            new GetEventData().execute();
+            new GetEventBriteData().execute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            /*eventLists.addAll(tweet);
+            eventLists.addAll(face);*/
+            Collections.sort(eventLists);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Log.d("EventListTag", eventLists.toString());
+            mAdapter = new EventListAdapter();
+            mAdapter.addAll(eventLists);
+            recyclerView.setAdapter(mAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mAdapter.setOnItemClickListener(new BetterRecyclerAdapter.OnItemClickListener<EventsDataList>() {
+                @Override
+                public void onItemClick(View v, EventsDataList item, int position) {
+                    Intent viewer = new Intent(getActivity(), ViewerActivity.class);
+                    viewer.putExtra(ViewerActivity.EXTRA_OS, item);
+                    startActivity(viewer);
+                }
+            });
+            infinityLoading.setVisibility(View.GONE);
+            //swipeLayout.setRefreshing(false);
+        }
     }
+}

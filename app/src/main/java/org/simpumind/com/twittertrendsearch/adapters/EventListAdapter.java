@@ -32,8 +32,7 @@ import com.ftinc.kit.adapter.BetterRecyclerAdapter;
 import com.kd.dynamic.calendar.generator.ImageGenerator;
 
 import org.simpumind.com.twittertrendsearch.R;
-import org.simpumind.com.twittertrendsearch.models.FaceBookEventList;
-import org.simpumind.com.twittertrendsearch.util.RoundedLetterView;
+import org.simpumind.com.twittertrendsearch.models.EventsDataList;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -50,7 +49,7 @@ import butterknife.ButterKnife;
 /**
  * Created by simpumind on 3/4/16.
  */
-public class EventListAdapter extends BetterRecyclerAdapter<FaceBookEventList, EventListAdapter.ViewHolder> {
+public class EventListAdapter extends BetterRecyclerAdapter<EventsDataList, EventListAdapter.ViewHolder> {
 
     java.sql.Timestamp timeStampDate;
 
@@ -71,10 +70,12 @@ public class EventListAdapter extends BetterRecyclerAdapter<FaceBookEventList, E
     public void onBindViewHolder(ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
         mImageGenerator = new ImageGenerator(c);
-        FaceBookEventList faceBookEventList = getItem(position);
+        EventsDataList faceBookEventList = getItem(position);
+        holder.sourceName.setText(faceBookEventList.getImgName());
+        holder.sourceImage.setImageResource(faceBookEventList.getImg());
         holder.eventName.setText(faceBookEventList.getEventName());
         holder.startEvent.setText( getDays(faceBookEventList.getStartTime()));
-        holder.eventDescription.setText(faceBookEventList.getDescription());
+        holder.eventDescription.setText(faceBookEventList.getDescription() + "...");
         /*if (items.size() == 0){
             holder.mRoundedLetterView.setTitleText("A");
         }else{
@@ -100,7 +101,7 @@ public class EventListAdapter extends BetterRecyclerAdapter<FaceBookEventList, E
 
     }
 
-    private void getCalender(FaceBookEventList faceBookEventList) {
+    private void getCalender(EventsDataList faceBookEventList) {
         Calendar cal = Calendar.getInstance();
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
         try {
@@ -128,6 +129,8 @@ public class EventListAdapter extends BetterRecyclerAdapter<FaceBookEventList, E
         @Bind(R.id.event_description)   public TextView eventDescription;
         @Bind(R.id.rlv_name_view)      public ImageView mDisplayGeneratedImage;
         @Bind(R.id.share)              public Button share;
+        @Bind(R.id.sourceName)         public TextView sourceName;
+        @Bind(R.id.sourceImg)          public ImageView sourceImage;
 
 
         public ViewHolder(View itemView) {
@@ -143,7 +146,7 @@ public class EventListAdapter extends BetterRecyclerAdapter<FaceBookEventList, E
         Calendar cal = Calendar.getInstance();
         try {
             d = dfDate.parse(dates);
-            d1 = dfDate.parse(dfDate.format(cal.getTime()));//Returns 15/10/2012
+            d1 = dfDate.parse(dfDate.format(cal.getTime()));
         } catch (java.text.ParseException e) {
             e.printStackTrace();
         }

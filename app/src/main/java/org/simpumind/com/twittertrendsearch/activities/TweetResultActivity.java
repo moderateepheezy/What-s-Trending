@@ -1,12 +1,14 @@
 package org.simpumind.com.twittertrendsearch.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+import com.thefinestartist.finestwebview.FinestWebView;
 
 import org.simpumind.com.twittertrendsearch.R;
 import org.simpumind.com.twittertrendsearch.api.TweetList;
@@ -35,8 +38,9 @@ public class TweetResultActivity extends AppCompatActivity {
     private Bus mBus;
     private String request;
 
+    public static Context c;
+
     private TweetAdapter brandAdapter;
-    private ProgressDialog progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,8 @@ public class TweetResultActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        c = getApplicationContext();
 
         Intent intent = getIntent();
         if (intent.hasExtra("value")) {
@@ -121,13 +127,9 @@ public class TweetResultActivity extends AppCompatActivity {
 
     public class MyAsyncTask extends AsyncTask<Void, Void, Void>{
 
-        ProgressDialog pDialog;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(TweetResultActivity.this);
-            pDialog.setMessage("Loading... ");
-            pDialog.show();
         }
 
         @Override
@@ -138,10 +140,9 @@ public class TweetResultActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            brandAdapter = new TweetAdapter(getApplicationContext(), new TweetList());
+            brandAdapter = new TweetAdapter(TweetResultActivity.this, new TweetList());
             ListView listView = (ListView) findViewById(R.id.list);
             listView.setAdapter(brandAdapter);
-            pDialog.dismiss();
         }
     }
 
@@ -169,5 +170,6 @@ public class TweetResultActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 }

@@ -2,6 +2,10 @@
 <resources>
 
 
+    <color name="bluePrimaryDark">#048BFE</color>
+    <color name="bluePrimary">#2199FF</color>
+    <color name="bluePrimaryLight">#BADFFF</color>
+
     <color name="list_item_title">#fff</color>
     <color name="list_background">#edecec</color>
     <color name="list_background_pressed">#992416</color>
@@ -9,9 +13,11 @@
     <color name="counter_text_bg">#626262</color>
     <color name="counter_text_color">#c5c4c4</color>
 
-    <color name="PrimaryColor">#2196F3</color>
-    <color name="PrimaryDarkColor">#1976D2</color>
+    <color name="PrimaryColor">#0e2e8c</color>
+    <color name="PrimaryDarkColor">#84c96f</color>
     <color name="indicator">#ecd95a</color>
+
+    <color name="tab_color">#84c96f</color>
 
     <color name="colorPrimary">#235279</color>
     <color name="colorPrimaryDark">#c79a7a</color>

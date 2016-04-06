@@ -1,0 +1,32 @@
+<com.github.ksoichiro.android.observablescrollview.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#beb9b9"
+    android:fillViewport="true"
+    android:overScrollMode="never">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_marginTop="50dp"
+        android:layout_height="fill_parent">
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            style="?android:attr/progressBarStyleLarge"
+            android:indeterminateDrawable="@drawable/custom_progress_background"/>
+
+    <android.support.v7.widget.RecyclerView
+    android:id="@+id/my_recycler_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:layout_margin="0dp"
+    />
+    </RelativeLayout>
+    </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
+

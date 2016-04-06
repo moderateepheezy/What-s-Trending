@@ -14,6 +14,7 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import org.simpumind.com.twittertrendsearch.R;
+import org.simpumind.com.twittertrendsearch.activities.TweetResultActivity;
 import org.simpumind.com.twittertrendsearch.api.TweetList;
 import org.simpumind.com.twittertrendsearch.event.SearchTweetsEvent;
 import org.simpumind.com.twittertrendsearch.event.SearchTweetsEventFailed;
@@ -47,7 +48,7 @@ public class SearchResultsFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_list_tweets, container, false);
-		brandAdapter = new TweetAdapter(getActivity(), new TweetList());
+		//brandAdapter = new TweetAdapter(TweetResultActivity., new TweetList());
 		setListAdapter(brandAdapter);
 		request = getArguments().getString(ARG_SEARCH_REQUEST);
 		return rootView;

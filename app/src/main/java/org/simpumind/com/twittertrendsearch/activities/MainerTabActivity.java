@@ -34,6 +34,7 @@ import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import org.simpumind.com.twittertrendsearch.R;
 import org.simpumind.com.twittertrendsearch.fragments.FaceBookEventFragment;
+import org.simpumind.com.twittertrendsearch.fragments.NewsFragment;
 import org.simpumind.com.twittertrendsearch.fragments.TwitterTrendFragment;
 import org.simpumind.com.twittertrendsearch.util.BaseActivity;
 
@@ -106,7 +107,7 @@ public class MainerTabActivity extends BaseActivity implements ObservableScrollV
 
         SlidingTabLayout slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         slidingTabLayout.setCustomTabView(R.layout.tab_indicator, android.R.id.text1);
-        slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.colorPrimary));
+        slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.tab_color));
         slidingTabLayout.setDistributeEvenly(true);
         slidingTabLayout.setViewPager(mPager);
 
@@ -301,7 +302,7 @@ public class MainerTabActivity extends BaseActivity implements ObservableScrollV
      */
     private class NavigationAdapter extends CacheFragmentStatePagerAdapter {
 
-        private  final String[] TITLES = new String[]{"EVENTS", "TRENDS"};
+        private  final String[] TITLES = new String[]{"EVENTS", "TRENDS", "NEWS"};
 
         private int mScrollY;
 
@@ -335,6 +336,14 @@ public class MainerTabActivity extends BaseActivity implements ObservableScrollV
                         args.putInt(TwitterTrendFragment.ARG_SCROLL_Y, mScrollY);
                         f.setArguments(args);
                     }
+                    break;
+                case 2:
+                    f = new NewsFragment();
+                    if (0 < mScrollY) {
+                        Bundle args = new Bundle();
+                        args.putInt(NewsFragment.ARG_SCROLL_Y, mScrollY);
+                        f.setArguments(args);
+                     }
                     break;
                 default:
                     f = new FaceBookEventFragment();

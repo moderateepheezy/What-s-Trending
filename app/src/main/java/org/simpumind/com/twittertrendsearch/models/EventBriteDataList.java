@@ -15,16 +15,16 @@ public class EventBriteDataList extends SugarRecord implements Parcelable{
     public String place;
     public String description;
     public String ids;
-    public String name;
+    public String eventName;
     public String url;
 
-    public EventBriteDataList(String startTime, String endTime, String place, String description, String ids, String name, String url) {
+    public EventBriteDataList(String startTime, String endTime, String place, String description, String ids, String eventName, String url) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.place = place;
         this.description = description;
         this.ids = ids;
-        this.name = name;
+        this.eventName = eventName;
         this.url = url;
     }
 
@@ -35,7 +35,7 @@ public class EventBriteDataList extends SugarRecord implements Parcelable{
         place = in.readString();
         description = in.readString();
         ids = in.readString();
-        name = in.readString();
+        eventName = in.readString();
         url = in.readString();
     }
 
@@ -63,7 +63,7 @@ public class EventBriteDataList extends SugarRecord implements Parcelable{
         dest.writeString(place);
         dest.writeString(description);
         dest.writeString(ids);
-        dest.writeString(name);
+        dest.writeString(eventName);
         dest.writeString(url);
     }
 
@@ -108,11 +108,11 @@ public class EventBriteDataList extends SugarRecord implements Parcelable{
     }
 
     public String getName() {
-        return name;
+        return eventName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.eventName = name;
     }
 
     public String getUrl() {
